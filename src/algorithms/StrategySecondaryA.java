@@ -27,9 +27,14 @@ public class StrategySecondaryA extends Brain {
 	private static final int ROGER = 0x0C0C0C0C;
 	private static final int OVER = 0xC00010FF;
 
-	private static final int TURNLEFTTASK = 1;
-	private static final int MOVETASK = 2;
-	private static final int TURNRIGHTTASK = 3;
+	private static final int TURNLEFTTASKROCKY = 1;
+	private static final int MOVETASKROCKY = 2;
+	private static final int TURNRIGHTTASKROCKY = 3;
+	
+	private static final int TURNLEFTTASKMARIO = 1;
+	private static final int MOVETASKMARIO = 2;
+	private static final int TURNRIGHTTASKMARIO = 3;
+	
 	private static final int SINK = 0xBADC0DE1;
 
 	// ---VARIABLES---//
@@ -62,7 +67,7 @@ public class StrategySecondaryA extends Brain {
 		}
 
 		// INIT
-		state = TURNLEFTTASK;
+		state = TURNLEFTTASKROCKY;
 		isMoving = false;
 		oldAngle = getHeading();
 	}
@@ -97,36 +102,124 @@ public class StrategySecondaryA extends Brain {
 			return;
 
 		// AUTOMATON
-		if (state == TURNLEFTTASK && !(isSameDirection(getHeading(), Parameters.NORTH))) {
+		
+		
+		if (state == TURNLEFTTASKROCKY && !(isSameDirection(getHeading(), Parameters.NORTH)) && whoAmI == ROCKY) {
 			stepTurn(Parameters.Direction.LEFT);
 			// sendLogMessage("Initial TeamA Secondary Bot1 position. Heading North!");
 			return;
 		}
-		if (state == TURNLEFTTASK && isSameDirection(getHeading(), Parameters.NORTH)) {
-			state = MOVETASK;
+		if (state == TURNLEFTTASKROCKY && isSameDirection(getHeading(), Parameters.NORTH) && whoAmI == ROCKY) {
+			state = MOVETASKROCKY;
 			myMove();
 			// sendLogMessage("Moving a head. Waza!");
 			return;
 		}
-		if (state == MOVETASK && detectFront().getObjectType() == IFrontSensorResult.Types.NOTHING) {
+		if (state == MOVETASKROCKY && detectFront().getObjectType() == IFrontSensorResult.Types.NOTHING && whoAmI == ROCKY) {
 			myMove(); // And what to do when blind blocked?
 			// sendLogMessage("Moving a head. Waza!");
 			return;
 		}
-		if (state == MOVETASK && detectFront().getObjectType() != IFrontSensorResult.Types.NOTHING) {
-			state = TURNRIGHTTASK;
+		
+		if (state == MOVETASKROCKY && detectFront().getObjectType() != IFrontSensorResult.Types.BULLET && whoAmI == ROCKY) {
+			state = TURNRIGHTTASKROCKY;
 			oldAngle = getHeading();
 			stepTurn(Parameters.Direction.RIGHT);
 			// sendLogMessage("Iceberg at 12 o'clock. Heading 3!");
 			return;
 		}
-		if (state == TURNRIGHTTASK && !(isSameDirection(getHeading(), oldAngle + Parameters.RIGHTTURNFULLANGLE))) {
+		
+		if (state == MOVETASKROCKY && detectFront().getObjectType() != IFrontSensorResult.Types.Wreck && whoAmI == ROCKY) {
+			state = TURNRIGHTTASKROCKY;
+			oldAngle = getHeading();
 			stepTurn(Parameters.Direction.RIGHT);
 			// sendLogMessage("Iceberg at 12 o'clock. Heading 3!");
 			return;
 		}
-		if (state == TURNRIGHTTASK && isSameDirection(getHeading(), oldAngle + Parameters.RIGHTTURNFULLANGLE)) {
-			state = MOVETASK;
+		
+		if (state == MOVETASKROCKY && detectFront().getObjectType() != IFrontSensorResult.Types.TeamMainBot && whoAmI == ROCKY) {
+			state = TURNRIGHTTASKROCKY;
+			oldAngle = getHeading();
+			stepTurn(Parameters.Direction.RIGHT);
+			// sendLogMessage("Iceberg at 12 o'clock. Heading 3!");
+			return;
+		}
+		
+		if (state == MOVETASKROCKY && detectFront().getObjectType() != IFrontSensorResult.Types.NOTHING && whoAmI == ROCKY) {
+			state = TURNRIGHTTASKROCKY;
+			oldAngle = getHeading();
+			stepTurn(Parameters.Direction.RIGHT);
+			// sendLogMessage("Iceberg at 12 o'clock. Heading 3!");
+			return;
+		}
+		if (state == TURNRIGHTTASKROCKY && !(isSameDirection(getHeading(), oldAngle + Parameters.RIGHTTURNFULLANGLE)) && whoAmI == ROCKY) {
+			stepTurn(Parameters.Direction.RIGHT);
+			// sendLogMessage("Iceberg at 12 o'clock. Heading 3!");
+			return;
+		}
+		if (state == TURNRIGHTTASKROCKY && isSameDirection(getHeading(), oldAngle + Parameters.RIGHTTURNFULLANGLE) && whoAmI == ROCKY) {
+			state = MOVETASKROCKY;
+			myMove();
+			// sendLogMessage("Moving a head. Waza!");
+			return;
+		}
+		
+		
+		if (state == TURNLEFTTASKMARIO && !(isSameDirection(getHeading(), Parameters.NORTH)) && whoAmI == MARIO) {
+			stepTurn(Parameters.Direction.LEFT);
+			// sendLogMessage("Initial TeamA Secondary Bot1 position. Heading North!");
+			return;
+		}
+		if (state == TURNLEFTTASKMARIO && isSameDirection(getHeading(), Parameters.NORTH) && whoAmI == MARIO) {
+			state = MOVETASKMARIO;
+			myMove();
+			// sendLogMessage("Moving a head. Waza!");
+			return;
+		}
+		if (state == MOVETASKMARIO && detectFront().getObjectType() == IFrontSensorResult.Types.NOTHING && whoAmI == MARIO) {
+			myMove(); // And what to do when blind blocked?
+			// sendLogMessage("Moving a head. Waza!");
+			return;
+		}
+		
+		if (state == MOVETASKMARIO && detectFront().getObjectType() != IFrontSensorResult.Types.BULLET && whoAmI == MARIO) {
+			state = TURNRIGHTTASKMARIO;
+			oldAngle = getHeading();
+			stepTurn(Parameters.Direction.RIGHT);
+			// sendLogMessage("Iceberg at 12 o'clock. Heading 3!");
+			return;
+		}
+		
+		if (state == MOVETASKMARIO && detectFront().getObjectType() != IFrontSensorResult.Types.Wreck && whoAmI == MARIO) {
+			state = TURNRIGHTTASKMARIO;
+			oldAngle = getHeading();
+			stepTurn(Parameters.Direction.RIGHT);
+			// sendLogMessage("Iceberg at 12 o'clock. Heading 3!");
+			return;
+		}
+		
+		if (state == MOVETASKMARIO && detectFront().getObjectType() != IFrontSensorResult.Types.TeamMainBot && whoAmI == MARIO) {
+			state = TURNRIGHTTASKMARIO;
+			oldAngle = getHeading();
+			stepTurn(Parameters.Direction.RIGHT);
+			// sendLogMessage("Iceberg at 12 o'clock. Heading 3!");
+			return;
+		}
+		
+		if (state == MOVETASKMARIO && detectFront().getObjectType() != IFrontSensorResult.Types.NOTHING && whoAmI == MARIO) {
+			state = TURNRIGHTTASKMARIO;
+			oldAngle = getHeading();
+			stepTurn(Parameters.Direction.RIGHT);
+			// sendLogMessage("Iceberg at 12 o'clock. Heading 3!");
+			return;
+		}
+		if (state == TURNRIGHTTASKMARIO && !(isSameDirection(getHeading(), oldAngle + Parameters.RIGHTTURNFULLANGLE)) && whoAmI == MARIO) {
+			stepTurn(Parameters.Direction.RIGHT);
+			// sendLogMessage("Iceberg at 12 o'clock. Heading 3!");
+			return;
+		}
+		if (state == TURNRIGHTTASKMARIO && isSameDirection(getHeading(), oldAngle + Parameters.RIGHTTURNFULLANGLE) && whoAmI == MARIO) {
+			state = MOVETASKMARIO;
 			myMove();
 			// sendLogMessage("Moving a head. Waza!");
 			return;
