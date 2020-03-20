@@ -1,4 +1,4 @@
-package algorithms;
+package Stages;
 
 import java.util.ArrayList;
 

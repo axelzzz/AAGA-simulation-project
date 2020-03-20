@@ -1,4 +1,4 @@
-package algorithms;
+package equipes_par_defaut;
 
 import java.util.ArrayList;
 import java.util.Random;

@@ -4,7 +4,7 @@
  * GPL version>=3 <http://www.gnu.org/licenses/>.
  * $Id: algorithms/HighwayFugitive.java 2014-10-28 buixuan.
  * ******************************************************/
-package algorithms;
+package equipes_par_defaut;
 
 import java.util.ArrayList;
 

@@ -4,7 +4,7 @@
  * GPL version>=3 <http://www.gnu.org/licenses/>.
  * $Id: algorithms/CampFire.java 2014-11-04 buixuan.
  * ******************************************************/
-package algorithms;
+package equipes_par_defaut;
 
 import java.util.ArrayList;
 import java.util.Random;
