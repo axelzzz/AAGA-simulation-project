@@ -1,5 +1,5 @@
 /* ******************************************************
- * Simovies - Eurobot 2015 Robomovies Simulator.
+  * Simovies - Eurobot 2015 Robomovies Simulator.
  * Copyright (C) 2014 <Binh-Minh.Bui-Xuan@ens-lyon.org>.
  * GPL version>=3 <http://www.gnu.org/licenses/>.
  * $Id: algorithms/Stage1.java 2014-10-18 buixuan.
@@ -121,6 +121,90 @@ public class StrategyMainA extends Brain {
 		}
 		if (debug && fireOrder)
 			sendLogMessage("Firing enemy at (" + targetX + "," + targetY + ") !!");
+		
+		
+		
+		if (state == MOVE_SOUTH_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.TeamSecondaryBot) {
+			sendLogMessage("BLOQUE VERS SUD PAR NOTRE ECLAIREUR");
+			return;
+		}
+		if (state == MOVE_SOUTH_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.TeamMainBot) {
+			sendLogMessage("BLOQUE VERS SUD PAR NOTRE ATTAQUANT");
+			return;
+		}
+		if (state == MOVE_NORTH_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.TeamSecondaryBot) {
+			sendLogMessage("BLOQUE VERS NORD PAR NOTRE ECLAIREUR");
+			return;
+		}
+		if (state == MOVE_NORTH_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.TeamMainBot) {
+			sendLogMessage("BLOQUE VERS NORD PAR NOTRE ATTAQUANT");
+			return;
+		}		
+		if (state == MOVE_EAST_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.TeamSecondaryBot) {
+			sendLogMessage("BLOQUE VERS EAST PAR NOTRE ECLAIREUR");
+			return;
+		}
+		if (state == MOVE_EAST_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.TeamMainBot) {
+			sendLogMessage("BLOQUE VERS EAST PAR NOTRE ATTAQUANT");
+			return;
+		}
+		
+		
+		
+		
+		if (state == MOVE_SOUTH_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.OpponentSecondaryBot) {
+			sendLogMessage("BLOQUE VERS SUD PAR LEUR ECLAIREUR");
+			return;
+		}
+		if (state == MOVE_SOUTH_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.OpponentMainBot) {
+			sendLogMessage("BLOQUE VERS SUD PAR LEUR ATTAQUANT");
+			return;
+		}
+		if (state == MOVE_NORTH_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.OpponentSecondaryBot) {
+			sendLogMessage("BLOQUE VERS NORD PAR LEUR ECLAIREUR");
+			return;
+		}
+		if (state == MOVE_NORTH_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.OpponentMainBot) {
+			sendLogMessage("BLOQUE VERS NORD PAR LEUR ATTAQUANT");
+			return;
+		}		
+		if (state == MOVE_EAST_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.OpponentSecondaryBot) {
+			sendLogMessage("BLOQUE VERS EAST PAR LEUR ECLAIREUR");
+			return;
+		}
+		if (state == MOVE_EAST_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.OpponentMainBot) {
+			sendLogMessage("BLOQUE VERS EAST PAR LEUR ATTAQUANT");
+			return;
+		}
+		
+		
+		
+		
+		if (state == MOVE_SOUTH_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.Wreck) {
+			sendLogMessage("BLOQUE VERS SUD PAR EPAVE");
+			return;
+		}
+		if (state == MOVE_SOUTH_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.Wreck) {
+			sendLogMessage("BLOQUE VERS SUD PAR EPAVE");
+			return;
+		}
+		if (state == MOVE_NORTH_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.Wreck) {
+			sendLogMessage("BLOQUE VERS NORD PAR EPAVE");
+			return;
+		}
+		if (state == MOVE_NORTH_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.Wreck) {
+			sendLogMessage("BLOQUE VERS NORD PAR EPAVE");
+			return;
+		}
+		if (state == MOVE_EAST_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.Wreck) {
+			sendLogMessage("BLOQUE VERS EAST PAR EPAVE");
+			return;
+		}
+		if (state == MOVE_EAST_TASK && detectFront().getObjectType() == IFrontSensorResult.Types.Wreck) {
+			sendLogMessage("BLOQUE VERS EAST PAR EPAVE");
+			return;
+		}
+		
 
 		// COMMUNICATION
 		ArrayList<String> messages = fetchAllMessages();
@@ -280,6 +364,7 @@ public class StrategyMainA extends Brain {
 			stepTurn(Parameters.Direction.LEFT);
 			return;
 		}
+		
 		if (state == TURN_NORTH_TASK && !(isSameDirection(getHeading(), Parameters.NORTH))) {
 			stepTurn(Parameters.Direction.LEFT);
 			return;
@@ -300,6 +385,7 @@ public class StrategyMainA extends Brain {
 			stepTurn(Parameters.Direction.RIGHT);
 			return;
 		}
+		
 		if (state == TURN_EAST_TASK && !(isSameDirection(getHeading(), Parameters.EAST))) {
 			if (myY < 1000) {
 				stepTurn(Parameters.Direction.RIGHT);

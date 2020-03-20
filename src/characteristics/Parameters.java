@@ -80,7 +80,7 @@ public class Parameters {
 	// ---TEAM-B-PARAMETERS---//
 	// -----------------------//
 	public static final String teamBName = "Fantom Danger";
-	public static final String teamBMainBotBrainClassName = "algorithms.BootingBerzerk"; // class given by name; is
+	public static final String teamBMainBotBrainClassName = "algorithms.RandomFire"; // class given by name; is
 																						// supposed to extends
 																						// robotsimulator.Brain
 	public static final String teamBMainBotAvatar = "avatars/hollowee.png"; // path relative to location of ant
@@ -105,7 +105,7 @@ public class Parameters {
 			teamBMainBot3InitHeading = WEST; // clockwise trigonometric unit, according to screen pixel coordinate
 												// reference
 
-	public static final String teamBSecondaryBotBrainClassName = "algorithms.BootingBerzerk"; // class given by name; is
+	public static final String teamBSecondaryBotBrainClassName = "algorithms.RandomFire"; // class given by name; is
 																							// supposed to extends
 																							// robotsimulator.Brain
 	public static final String teamBSecondaryBotAvatar = "avatars/fannyExplorer.png"; // path relative to location of
