@@ -4,7 +4,7 @@
  * GPL version>=3 <http://www.gnu.org/licenses/>.
  * $Id: algorithms/Stage1.java 2014-10-18 buixuan.
  * ******************************************************/
-package Stages;
+package stages;
 
 import robotsimulator.Brain;
 import characteristics.Parameters;
@@ -18,9 +18,9 @@ public class Stage7MainA extends Brain {
   private static final double ANGLEPRECISION = 0.01;
   private static final double FIREANGLEPRECISION = Math.PI/(double)6;
 
-  private static final int ALPHA = 0x1EADDA;
-  private static final int BETA = 0x5EC0;
-  private static final int GAMMA = 0x333;
+  private static final int ALPHA = 0x1EADDA;//2010586
+  private static final int BETA = 0x5EC0;//24256
+  private static final int GAMMA = 0x333;//819
   private static final int TEAM = 0xBADDAD;
   private static final int UNDEFINED = 0xBADC0DE0;
   

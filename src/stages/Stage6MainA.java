@@ -4,7 +4,7 @@
  * GPL version>=3 <http://www.gnu.org/licenses/>.
  * $Id: algorithms/Stage1.java 2014-10-18 buixuan.
  * ******************************************************/
-package Stages;
+package stages;
 
 import robotsimulator.Brain;
 import characteristics.Parameters;

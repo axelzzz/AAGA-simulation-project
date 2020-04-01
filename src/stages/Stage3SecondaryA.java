@@ -4,7 +4,7 @@
  * GPL version>=3 <http://www.gnu.org/licenses/>.
  * $Id: algorithms/Stage1.java 2014-10-18 buixuan.
  * ******************************************************/
-package Stages;
+package stages;
 
 import robotsimulator.Brain;
 import characteristics.Parameters;
@@ -13,7 +13,7 @@ import characteristics.IRadarResult;
 
 import java.util.ArrayList;
 
-public class Stage4SecondaryA extends Brain {
+public class Stage3SecondaryA extends Brain {
   //---PARAMETERS---//
   private static final double HEADINGPRECISION = 0.001;
   private static final double ANGLEPRECISION = 0.1;
@@ -26,7 +26,8 @@ public class Stage4SecondaryA extends Brain {
   private static final int MOVESOUTHTASK = 2;
   private static final int TURNEASTTASK = 3;
   private static final int MOVEEASTTASK = 4;
-  private static final int FREEZE = -1;
+  private static final int UTURNTASK = 5;
+  private static final int UTURNAGAINTASK = 6;
   private static final int SINK = 0xBADC0DE1;
 
   //---VARIABLES---//
@@ -35,9 +36,10 @@ public class Stage4SecondaryA extends Brain {
   private boolean isMoving;
   private int whoAmI;
   private double width;
+  private int ballet;
 
   //---CONSTRUCTORS---//
-  public Stage4SecondaryA() { super(); }
+  public Stage3SecondaryA() { super(); }
 
   //---ABSTRACT-METHODS-IMPLEMENTATION---//
   public void activate() {
@@ -45,34 +47,27 @@ public class Stage4SecondaryA extends Brain {
     whoAmI = ROCKY;
     for (IRadarResult o: detectRadar())
       if (isSameDirection(o.getObjectDirection(),Parameters.NORTH)) whoAmI=MARIO;
-    if (whoAmI == ROCKY){
-      myX=Parameters.teamASecondaryBot1InitX;
-      myY=Parameters.teamASecondaryBot1InitY;
-    } else {
+    if (whoAmI == MARIO){
       myX=Parameters.teamASecondaryBot2InitX;
       myY=Parameters.teamASecondaryBot2InitY;
+    } else {
+      myX=0;
+      myY=0;
     }
 
     //INIT
-    state=TURNSOUTHTASK;
+    state=(whoAmI==MARIO)?TURNSOUTHTASK:SINK;
     isMoving=false;
+    ballet=0;
   }
   public void step() {
     //ODOMETRY CODE
-    if (isMoving && whoAmI == ROCKY){
-      myX+=Parameters.teamASecondaryBotSpeed*Math.cos(myGetHeading());
-      myY+=Parameters.teamASecondaryBotSpeed*Math.sin(myGetHeading());
-      isMoving=false;
-    }
     if (isMoving && whoAmI == MARIO){
       myX+=Parameters.teamASecondaryBotSpeed*Math.cos(myGetHeading());
       myY+=Parameters.teamASecondaryBotSpeed*Math.sin(myGetHeading());
       isMoving=false;
     }
     //DEBUG MESSAGE
-    if (whoAmI == ROCKY && state!=SINK) {
-      sendLogMessage("#ROCKY *thinks* (x,y)= ("+(int)myX+", "+(int)myY+") and theta= "+(int)(myGetHeading()*180/(double)Math.PI)+"°.");
-    }
     if (whoAmI == MARIO && state!=SINK) {
       sendLogMessage("#MARIO *thinks* (x,y)= ("+(int)myX+", "+(int)myY+") and theta= "+(int)(myGetHeading()*180/(double)Math.PI)+"°.");
     }
@@ -111,30 +106,71 @@ public class Stage4SecondaryA extends Brain {
       //sendLogMessage("Moving a head. Waza!");
       return;
     }
-    if (state==MOVEEASTTASK && detectFront().getObjectType()!=IFrontSensorResult.Types.WALL && myX<2200 && whoAmI==MARIO) {
+    if (state==MOVEEASTTASK && detectFront().getObjectType()!=IFrontSensorResult.Types.WALL && myX<1000 && ballet==0) {
       myMove(); //And what to do when blind blocked?
       //sendLogMessage("Moving a head. Waza!");
       return;
     }
-    if (state==MOVEEASTTASK && detectFront().getObjectType()!=IFrontSensorResult.Types.WALL && myX>=2200 && whoAmI==MARIO) {
-      state=FREEZE;
-      //sendLogMessage("Freeze.");
+    if (state==MOVEEASTTASK && detectFront().getObjectType()!=IFrontSensorResult.Types.WALL && myX>=1000 && ballet==0) {
+      ballet=1;
+      state=UTURNTASK;
+      stepTurn(Parameters.Direction.RIGHT);
+      //sendLogMessage("First ballet.");
       return;
     }
-    if (state==MOVEEASTTASK && detectFront().getObjectType()!=IFrontSensorResult.Types.WALL && myX<1800 && whoAmI==ROCKY) {
+    if (state==MOVEEASTTASK && detectFront().getObjectType()!=IFrontSensorResult.Types.WALL && myX<1500 && ballet==1) {
       myMove(); //And what to do when blind blocked?
       //sendLogMessage("Moving a head. Waza!");
       return;
     }
-    if (state==MOVEEASTTASK && detectFront().getObjectType()!=IFrontSensorResult.Types.WALL && myX>=1800 && whoAmI==ROCKY) {
-      state=FREEZE;
+    if (state==MOVEEASTTASK && detectFront().getObjectType()!=IFrontSensorResult.Types.WALL && myX>=1500 && ballet==1) {
+      ballet=2;
+      state=UTURNTASK;
+      stepTurn(Parameters.Direction.RIGHT);
       //sendLogMessage("Second ballet.");
       return;
     }
-
-    if (state==FREEZE) {
+    if (state==MOVEEASTTASK && detectFront().getObjectType()!=IFrontSensorResult.Types.WALL && myX<2000 && ballet==2) {
+      myMove(); //And what to do when blind blocked?
+      //sendLogMessage("Moving a head. Waza!");
       return;
     }
+    if (state==MOVEEASTTASK && detectFront().getObjectType()!=IFrontSensorResult.Types.WALL && myX>=2000 && ballet==2) {
+      ballet=3;
+      state=UTURNTASK;
+      stepTurn(Parameters.Direction.RIGHT);
+      //sendLogMessage("Third ballet.");
+      return;
+    }
+    if (state==MOVEEASTTASK && detectFront().getObjectType()!=IFrontSensorResult.Types.WALL && ballet>0 && ballet<4) {
+      myMove(); //And what to do when blind blocked?
+      //sendLogMessage("Moving a head. Waza!");
+      return;
+    }
+    if (state==MOVEEASTTASK && detectFront().getObjectType()==IFrontSensorResult.Types.WALL) {
+      state=SINK;
+      //sendLogMessage("Iceberg at 12 o'clock. Freezing.");
+      return;
+    }
+    if (state==UTURNTASK && !(isSameDirection(myGetHeading(),Parameters.WEST))) {
+      stepTurn(Parameters.Direction.RIGHT);
+      return;
+    }
+    if (state==UTURNTASK && isSameDirection(myGetHeading(),Parameters.WEST)) {
+      state=UTURNAGAINTASK;
+      stepTurn(Parameters.Direction.RIGHT);
+      return;
+    }
+    if (state==UTURNAGAINTASK && !(isSameDirection(myGetHeading(),Parameters.EAST))) {
+      stepTurn(Parameters.Direction.RIGHT);
+      return;
+    }
+    if (state==UTURNAGAINTASK && isSameDirection(myGetHeading(),Parameters.EAST)) {
+      state=MOVEEASTTASK;
+      myMove();
+      return;
+    }
+
     if (state==SINK) {
       myMove();
       return;

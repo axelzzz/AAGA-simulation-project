@@ -4,7 +4,7 @@
  * GPL version>=3 <http://www.gnu.org/licenses/>.
  * $Id: algorithms/Stage1.java 2014-10-18 buixuan.
  * ******************************************************/
-package Stages;
+package stages;
 
 import robotsimulator.Brain;
 import characteristics.Parameters;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class Stage2SecondaryA extends Brain {
   //---PARAMETERS---//
   private static final double HEADINGPRECISION = 0.001;
-  private static final double ANGLEPRECISION = 0.1;
+  private static final double ANGLEPRECISION = 0.01;
 
   private static final int ROCKY = 0x1EADDA;
   private static final int MARIO = 0x5EC0;
@@ -154,6 +154,6 @@ public class Stage2SecondaryA extends Brain {
     move();
   }
   private boolean isSameDirection(double dir1, double dir2){
-    return Math.abs(dir1-dir2)<ANGLEPRECISION;
-  }
+	    return Math.abs(dir1-dir2)<ANGLEPRECISION;
+	  }
 }

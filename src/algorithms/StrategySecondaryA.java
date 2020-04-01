@@ -17,8 +17,8 @@ public class StrategySecondaryA extends Brain {
 	// ---PARAMETERS---//
 	private static final double ANGLEPRECISION = 0.01;
 
-	private static final int ROCKY = 0x1EADDA;
-	private static final int MARIO = 0x5EC0;
+	private static final int ROCKY = 0x1EADDB;
+	private static final int MARIO = 0x5ED0;
 	private static final int TEAM = 0xBADDAD;
 	private static final int UNDEFINED = 0xBADC0DE0;
 
@@ -26,6 +26,7 @@ public class StrategySecondaryA extends Brain {
 	private static final int FALLBACK = 0xFA11BAC;
 	private static final int ROGER = 0x0C0C0C0C;
 	private static final int OVER = 0xC00010FF;
+	private static final int COMM = 0xC00120F3;
 
 	private static final int TURNLEFTTASKROCKY = 1;
 	private static final int MOVETASKROCKY = 2;
@@ -44,6 +45,8 @@ public class StrategySecondaryA extends Brain {
 	private boolean isMoving;
 	private boolean freeze;
 	private int whoAmI;
+	private ArrayList<Integer> positionList = new ArrayList<Integer>();
+
 
 	// ---CONSTRUCTORS---//
 	public StrategySecondaryA() {
@@ -70,6 +73,9 @@ public class StrategySecondaryA extends Brain {
 		state = TURNLEFTTASKROCKY;
 		isMoving = false;
 		oldAngle = getHeading();
+		for (int i=0; i<10; i++) {
+			positionList.add(0);
+		}
 	}
 
 	public void step() {
@@ -85,6 +91,16 @@ public class StrategySecondaryA extends Brain {
 		else
 			sendLogMessage("#MARIO *thinks* he is rolling at position (" + (int) myX + ", " + (int) myY + ").");
 
+		
+		// COMMUNICATION
+		broadcast(whoAmI + "/" + TEAM + "/" + COMM + "/" + state + "/" + myX + "/" + myY + "/" + OVER);
+		ArrayList<String> messages = fetchAllMessages();
+		for (String m : messages)
+			if (Integer.parseInt(m.split("/")[1]) == whoAmI || Integer.parseInt(m.split("/")[1]) == TEAM)
+				process(m);
+		
+		
+		
 		// RADAR DETECTION
 		freeze = false;
 		for (IRadarResult o : detectRadar()) {
@@ -92,7 +108,8 @@ public class StrategySecondaryA extends Brain {
 					|| o.getObjectType() == IRadarResult.Types.OpponentSecondaryBot) {
 				double enemyX = myX + o.getObjectDistance() * Math.cos(o.getObjectDirection());
 				double enemyY = myY + o.getObjectDistance() * Math.sin(o.getObjectDirection());
-				broadcast(whoAmI + ":" + TEAM + ":" + FIRE + ":" + enemyX + ":" + enemyY + ":" + OVER);
+				broadcast(whoAmI + "/" + TEAM + "/" + FIRE + "/" + enemyX + "/" + enemyY + "/" + OVER);
+//				System.out.println(whoAmI + " find enemy : " + enemyX + "," + enemyY);
 			}
 			if (o.getObjectDistance() <= 100) {
 				freeze = true;
@@ -242,4 +259,45 @@ public class StrategySecondaryA extends Brain {
 	private boolean isSameDirection(double dir1, double dir2) {
 		return Math.abs(dir1 - dir2) < ANGLEPRECISION;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private void process(String message) {
+		if (Integer.parseInt(message.split("/")[2]) == 11111) {
+			int i = 0;
+			if (Integer.parseInt(message.split("/")[0]) == 0x333) {
+				i = 0;
+			} else if (Integer.parseInt(message.split("/")[0]) == 0x5EC0) {
+				i = 2;
+			} else if (Integer.parseInt(message.split("/")[0]) == 0x1EADDA) {
+				i = 4;
+			} else if (Integer.parseInt(message.split("/")[0]) == 0x1EADDB) {
+				i = 6;
+			} else if (Integer.parseInt(message.split("/")[0]) == 0x5ED0) {
+				i = 8;
+			}
+
+			positionList.set(i, (int)Double.parseDouble(message.split("/")[3]));
+			positionList.set(i+1, (int)Double.parseDouble(message.split("/")[4]));
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
