@@ -3,7 +3,7 @@ tirant en rafale. Ils tirent par défaut tout droit lorsque les Secondary ne com
 
 Les 3 Main sont séparés d'une petite distance de telle sorte que lorsqu'ils attaquent, ils attaquent la même cible, 
 pour la neutraliser le plus rapidement possible. Lorsqu'un ennemi est détecté par les Secondary, les Mains s'arrêtent
-et attaquent la cible. Les Secondary se déplacent toujours dans ce cas-là.
+et attaquent la cible. Les Secondary se déplacent dans ce cas-là.
 
 
 Nous avons placé un Secondary par couloir entourant les Main. Ils sont placés à équidistance des Mains de telle sorte 
@@ -19,3 +19,4 @@ Si des épaves empêchent le déplacement de nos bots, ils les contournent.
 
 Lorsqu'un Secondary trouve un ennemi, il envoie la position (de l'ennemi) aux Main puis recule pour ne pas être détécté par 
 l'ennemi.
+
