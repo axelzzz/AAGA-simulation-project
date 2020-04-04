@@ -13,7 +13,7 @@ import characteristics.IRadarResult;
 
 import java.util.ArrayList;
 
-public class StrategyMainA extends Brain {
+public class testAMain extends Brain {
 	// ---PARAMETERS---//
 	private static final double ANGLEPRECISION = 0.01;
 	private static final double FIREANGLEPRECISION = Math.PI / (double) 6;
@@ -64,7 +64,7 @@ public class StrategyMainA extends Brain {
 	private ArrayList<Integer> positionList = new ArrayList<Integer>();
 
 	// ---CONSTRUCTORS---//
-	public StrategyMainA() {
+	public testAMain() {
 		super();
 	}
 

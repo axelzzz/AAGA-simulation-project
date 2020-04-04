@@ -1,4 +1,4 @@
-package equipes_par_defaut;
+package algorithms;
 
 import java.util.ArrayList;
 

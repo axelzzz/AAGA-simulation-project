@@ -4,7 +4,7 @@
  * GPL version>=3 <http://www.gnu.org/licenses/>.
  * $Id: algorithms/BootingBerzerk.java 2014-11-03 buixuan.
  * ******************************************************/
-package equipes_par_defaut;
+package algorithms;
 
 import java.util.ArrayList;
 

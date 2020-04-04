@@ -13,7 +13,7 @@ import characteristics.IRadarResult;
 
 import java.util.ArrayList;
 
-public class StrategyMainB extends Brain {
+public class teamBMain extends Brain {
 	// ---PARAMETERS---//
 	private static final double ANGLEPRECISION = 0.01;
 	private static final double FIREANGLEPRECISION = Math.PI / (double) 6;
@@ -131,7 +131,7 @@ public class StrategyMainB extends Brain {
 	private int oldX, oldY;
 
 	// ---CONSTRUCTORS---//
-	public StrategyMainB() {
+	public teamBMain() {
 		super();
 	}
 
@@ -179,19 +179,23 @@ public class StrategyMainB extends Brain {
 					int wreckY = (int) (myY + o.getObjectDistance() * Math.sin(o.getObjectDirection()));
 					int dist = distance(myX, myY, wreckX, wreckY);
 					if (state == MOVE_AND_FIRE_TASK) {
-						if (wreckY >= myY - 100 && wreckY <= myY + 100 && dist < 150) {
+						if (dist < 150 && wreckY >= myY - 100 && wreckY <= myY + 100 && wreckX<=myX) {
 							if (wreckY >= myY) {
-								state = TURN_NORTH_TO_BYBASS_EAST_TASK_1;
+//								state = TURN_NORTH_TO_BYBASS_EAST_TASK_1;
+								state = TURN_NORTH_TO_BYBASS_WEST_TASK_1;
 							} else {
-								state = TURN_SOUTH_TO_BYBASS_EAST_TASK_1;
+//								state = TURN_SOUTH_TO_BYBASS_EAST_TASK_1;
+								state = TURN_SOUTH_TO_BYBASS_WEST_TASK_1;
 							}
 						}
 					} else if (state == MOVE_BACK_AND_FIRE_TASK) {
-						if (wreckY >= myY - 100 && wreckY <= myY + 100 && dist < 150) {
+						if (dist < 150 && wreckY >= myY - 100 && wreckY <= myY + 100 && wreckX>myX) {
 							if (wreckY >= myY) {
-								state = TURN_NORTH_TO_BYBASS_WEST_TASK_1;
+//								state = TURN_NORTH_TO_BYBASS_WEST_TASK_1;
+								state = TURN_NORTH_TO_BYBASS_EAST_TASK_1;
 							} else {
-								state = TURN_SOUTH_TO_BYBASS_WEST_TASK_1;
+//								state = TURN_SOUTH_TO_BYBASS_WEST_TASK_1;
+								state = TURN_SOUTH_TO_BYBASS_EAST_TASK_1;
 							}
 						}
 					}
@@ -306,19 +310,19 @@ public class StrategyMainB extends Brain {
 				whoAmI = BETA;
 
 		if (whoAmI == GAMMA) {
-			myX = Parameters.teamAMainBot1InitX;
-			myY = Parameters.teamAMainBot1InitY;
+			myX = Parameters.teamBMainBot1InitX;
+			myY = Parameters.teamBMainBot1InitY;
 		} else {
-			myX = Parameters.teamAMainBot2InitX;
-			myY = Parameters.teamAMainBot2InitY;
+			myX = Parameters.teamBMainBot2InitX;
+			myY = Parameters.teamBMainBot2InitY;
 		}
 		if (whoAmI == ALPHA) {
-			myX = Parameters.teamAMainBot3InitX;
-			myY = Parameters.teamAMainBot3InitY;
+			myX = Parameters.teamBMainBot3InitX;
+			myY = Parameters.teamBMainBot3InitY;
 		}
 
 		// INIT
-		state = MOVE_EAST_TASK;
+		state = MOVE_WEST_TASK;
 		isMoving = false;
 		fireOrder = false;
 		fireRythm = 0;
@@ -337,35 +341,35 @@ public class StrategyMainB extends Brain {
 
 		
 	private void displayMessage() {
-//		if (whoAmI == ALPHA) {
-//			sendLogMessage("#ALPHA : (x,y)= (" + (int) myX + ", " + (int) myY + ") theta= "
-//					+ (int) (myGetHeading() * 180 / (double) Math.PI) + "°. #State= " + state);
-//		}
-//		if (whoAmI == BETA) {
-//			sendLogMessage("#BETA : (x,y)= (" + (int) myX + ", " + (int) myY + ") theta= "
-//					+ (int) (myGetHeading() * 180 / (double) Math.PI) + "°. #State= " + state);
-//		}
-//		if (whoAmI == GAMMA) {
-//			sendLogMessage("#GAMMA : (x,y)= (" + (int) myX + ", " + (int) myY + ") theta= "
-//					+ (int) (myGetHeading() * 180 / (double) Math.PI) + "°. #State= " + state);
-//		}
-
 		if (whoAmI == ALPHA) {
-			sendLogMessage("#A : (" + (int) myX + "," + (int) myY + ") State= " + state + " fireOrder=" + fireOrder
-					+ " (" + (int) targetX + "," + (int) targetY + ")" + " " + detectFront().getObjectType());
+			sendLogMessage("#ALPHA : (x,y)= (" + (int) myX + ", " + (int) myY + ") theta= "
+					+ (int) (myGetHeading() * 180 / (double) Math.PI) + "°. #State= " + state);
 		}
 		if (whoAmI == BETA) {
-			sendLogMessage("#B : (" + (int) myX + "," + (int) myY + ") State= " + state + " fireOrder=" + fireOrder
-					+ " (" + (int) targetX + "," + (int) targetY + ")" + " " + detectFront().getObjectType());
+			sendLogMessage("#BETA : (x,y)= (" + (int) myX + ", " + (int) myY + ") theta= "
+					+ (int) (myGetHeading() * 180 / (double) Math.PI) + "°. #State= " + state);
 		}
 		if (whoAmI == GAMMA) {
-			sendLogMessage("#G : (" + (int) myX + "," + (int) myY + ") State= " + state + " fireOrder=" + fireOrder
-					+ " (" + (int) targetX + "," + (int) targetY + ")" + " " + detectFront().getObjectType());
+			sendLogMessage("#GAMMA : (x,y)= (" + (int) myX + ", " + (int) myY + ") theta= "
+					+ (int) (myGetHeading() * 180 / (double) Math.PI) + "°. #State= " + state);
 		}
 
-//		if (fireOrder) {
-//			sendLogMessage("Firing enemy at ("+ (int)targetX+","+(int)targetY+")" );
+//		if (whoAmI == ALPHA) {
+//			sendLogMessage("#A : (" + (int) myX + "," + (int) myY + ") State= " + state 
+//					+ " (" + (int)memberList.get(2).get(2)+","+(int)memberList.get(2).get(3) + ")" + " " + detectFront().getObjectType());
 //		}
+//		if (whoAmI == BETA) {
+//			sendLogMessage("#B : (" + (int) myX + "," + (int) myY + ") State= " + state 
+//					+ " (" + (int)memberList.get(1).get(2)+","+(int)memberList.get(1).get(3) + ")" + " " + detectFront().getObjectType());
+//		}
+//		if (whoAmI == GAMMA) {
+//			sendLogMessage("#G : (" + (int) myX + "," + (int) myY + ") State= " + state 
+//					+ " (" + (int)memberList.get(0).get(2)+","+(int)memberList.get(0).get(3) + ")" + " " + detectFront().getObjectType());
+//		}
+
+		if (fireOrder) {
+			sendLogMessage("Firing enemy at ("+ (int)targetX+","+(int)targetY+")" );
+		}
 	}
 
 		
@@ -466,8 +470,8 @@ public class StrategyMainB extends Brain {
 			}
 		}
 
-		if (myX > 975 && myX < 980 && !(OMBG && OMBB && OMBA)) {
-//			System.out.println("---------------------------------");
+		if (myX > 2020 && myX < 2025 && !(OMBG && OMBB && OMBA)) {
+//			System.out.println("---------- myx="+myX+" OMBG="+OMBG+" OMBB="+OMBB+" OMBA="+OMBA );
 			broadcast(whoAmI + "/" + TEAM + "/" + NOT_FIFTH_ELEMENT + "/" + OVER);
 		}
 		if (detectFront().getObjectType() == IFrontSensorResult.Types.OpponentMainBot) {
@@ -483,13 +487,13 @@ public class StrategyMainB extends Brain {
 		}
 
 		if (state == FIRE_TASK) {
-			state = MOVE_EAST_TASK;
-			if (!isTeamInRange(0)) {
-				fire(0);
+			state = MOVE_WEST_TASK;
+			if (!isTeamInRange(Math.PI)) {
+				fire(Math.PI);
 			}
 			return;
 		}
-		if (state == MOVE_EAST_TASK) {
+		if (state == MOVE_WEST_TASK) {
 			state = FIRE_TASK;
 			myMove();
 			return;
@@ -501,16 +505,15 @@ public class StrategyMainB extends Brain {
 		}
 		if (state == END_OF_FE_TASK_1 && detectFront().getObjectType() != IFrontSensorResult.Types.Wreck) {
 			state = END_OF_FE_TASK_2;
-			stepTurn(Parameters.Direction.LEFT);
 			return;
 		}
 		if (whoAmI == GAMMA && state == END_OF_FE_TASK_2) {
 			state = END_OF_FE_TASK_3;
-			stepTurn(Parameters.Direction.LEFT);
+			stepTurn(Parameters.Direction.RIGHT);
 			return;
 		}
 		if (whoAmI == GAMMA && state == END_OF_FE_TASK_3 && !isSameDirection(getHeading(), Parameters.NORTH)) {
-			stepTurn(Parameters.Direction.LEFT);
+			stepTurn(Parameters.Direction.RIGHT);
 			return;
 		}
 		if (whoAmI == GAMMA && state == END_OF_FE_TASK_3 && isSameDirection(getHeading(), Parameters.NORTH)) {
@@ -524,21 +527,21 @@ public class StrategyMainB extends Brain {
 		}
 		if (whoAmI == GAMMA && state == END_OF_FE_TASK_4 && myY <= 10) {
 			state = END_OF_FE_TASK_5;
-			stepTurn(Parameters.Direction.RIGHT);
+			stepTurn(Parameters.Direction.LEFT);
 			return;
 		}
-		if (whoAmI == GAMMA && state == END_OF_FE_TASK_5 && !isSameDirection(getHeading(), Parameters.EAST)) {
-			stepTurn(Parameters.Direction.RIGHT);
+		if (whoAmI == GAMMA && state == END_OF_FE_TASK_5 && !isSameDirection(getHeading(), Parameters.WEST)) {
+			stepTurn(Parameters.Direction.LEFT);
 			return;
 		}
-		if (whoAmI == GAMMA && state == END_OF_FE_TASK_5 && isSameDirection(getHeading(), Parameters.EAST)) {
+		if (whoAmI == GAMMA && state == END_OF_FE_TASK_5 && isSameDirection(getHeading(), Parameters.WEST)) {
 			state = END_OF_FE_TASK_6;
 			myMove();
 			return;
 		}
 		if (state == END_OF_FE_TASK_6) {
 			state = END_OF_FE_TASK_7;
-			fire(0);
+			fire(Math.PI);
 			return;
 		}
 		if (state == END_OF_FE_TASK_7) {
@@ -548,11 +551,11 @@ public class StrategyMainB extends Brain {
 		}
 		if (whoAmI == ALPHA && state == END_OF_FE_TASK_2) {
 			state = END_OF_FE_TASK_3;
-			stepTurn(Parameters.Direction.RIGHT);
+			stepTurn(Parameters.Direction.LEFT);
 			return;
 		}
 		if (whoAmI == ALPHA && state == END_OF_FE_TASK_3 && !isSameDirection(getHeading(), Parameters.SOUTH)) {
-			stepTurn(Parameters.Direction.RIGHT);
+			stepTurn(Parameters.Direction.LEFT);
 			return;
 		}
 		if (whoAmI == ALPHA && state == END_OF_FE_TASK_3 && isSameDirection(getHeading(), Parameters.SOUTH)) {
@@ -566,21 +569,21 @@ public class StrategyMainB extends Brain {
 		}
 		if (whoAmI == ALPHA && state == END_OF_FE_TASK_4 && myY >= 1990) {
 			state = END_OF_FE_TASK_5;
-			stepTurn(Parameters.Direction.LEFT);
+			stepTurn(Parameters.Direction.RIGHT);
 			return;
 		}
-		if (whoAmI == ALPHA && state == END_OF_FE_TASK_5 && !isSameDirection(getHeading(), Parameters.EAST)) {
-			stepTurn(Parameters.Direction.LEFT);
+		if (whoAmI == ALPHA && state == END_OF_FE_TASK_5 && !isSameDirection(getHeading(), Parameters.WEST)) {
+			stepTurn(Parameters.Direction.RIGHT);
 			return;
 		}
-		if (whoAmI == ALPHA && state == END_OF_FE_TASK_5 && isSameDirection(getHeading(), Parameters.EAST)) {
+		if (whoAmI == ALPHA && state == END_OF_FE_TASK_5 && isSameDirection(getHeading(), Parameters.WEST)) {
 			state = END_OF_FE_TASK_6;
 			myMove();
 			return;
 		}
 		if (state == END_OF_FE_TASK_6) {
 			state = END_OF_FE_TASK_7;
-			fire(0);
+			fire(Math.PI);
 			return;
 		}
 		if (state == END_OF_FE_TASK_7) {
@@ -596,9 +599,9 @@ public class StrategyMainB extends Brain {
 	private void CounterStrike() {
 
 		if (myX >= 2850)
-			broadcast(whoAmI + "/" + TEAM + "/" + MOVE_BACK_AND_FIRE_TASK + "/" + OVER);
-		if (myX <= 150)
 			broadcast(whoAmI + "/" + TEAM + "/" + MOVE_AND_FIRE_TASK + "/" + OVER);
+		if (myX <= 150)
+			broadcast(whoAmI + "/" + TEAM + "/" + MOVE_BACK_AND_FIRE_TASK + "/" + OVER);
 
 		bypassWreck();
 
@@ -626,8 +629,8 @@ public class StrategyMainB extends Brain {
 		} else {
 			if (Is_Move_Fire) {
 				Is_Move_Fire = false;
-				if (!isTeamInRange(0)) {
-					fire(0);
+				if (!isTeamInRange(Math.PI)) {
+					fire(Math.PI);
 				}
 				return;
 			} else {
@@ -656,8 +659,8 @@ public class StrategyMainB extends Brain {
 		} else {
 			if (Is_Move_Fire) {
 				Is_Move_Fire = false;
-				if (!isTeamInRange(Math.PI)) {
-					fire(Math.PI);
+				if (!isTeamInRange(0)) {
+					fire(0);
 				}
 				return;
 			} else {
@@ -679,7 +682,7 @@ public class StrategyMainB extends Brain {
 	private void bypassWreck_N_E() {
 
 		if (state == TURN_NORTH_TO_BYBASS_EAST_TASK_1 && !(isSameDirection(getHeading(), Parameters.NORTH))) {
-			stepTurn(Parameters.Direction.LEFT);
+			stepTurn(Parameters.Direction.RIGHT);
 			return;
 		}
 		if (state == TURN_NORTH_TO_BYBASS_EAST_TASK_1 && isSameDirection(getHeading(), Parameters.NORTH)) {
@@ -731,16 +734,16 @@ public class StrategyMainB extends Brain {
 			return;
 		}
 		if (state == TURN_NORTH_TO_BYBASS_EAST_TASK_6 && myY - oldY > 100) {
-			stepTurn(Parameters.Direction.LEFT);
+			stepTurn(Parameters.Direction.RIGHT);
 			state = TURN_NORTH_TO_BYBASS_EAST_TASK_7;
 			return;
 		}
-		if (state == TURN_NORTH_TO_BYBASS_EAST_TASK_7 && !(isSameDirection(getHeading(), Parameters.EAST))) {
-			stepTurn(Parameters.Direction.LEFT);
+		if (state == TURN_NORTH_TO_BYBASS_EAST_TASK_7 && !(isSameDirection(getHeading(), Parameters.WEST))) {
+			stepTurn(Parameters.Direction.RIGHT);
 			return;
 		}
-		if (state == TURN_NORTH_TO_BYBASS_EAST_TASK_7 && isSameDirection(getHeading(), Parameters.EAST)) {
-			state = MOVE_AND_FIRE_TASK;
+		if (state == TURN_NORTH_TO_BYBASS_EAST_TASK_7 && isSameDirection(getHeading(), Parameters.WEST)) {
+			state = MOVE_BACK_AND_FIRE_TASK;
 			return;
 		}
 
@@ -749,7 +752,7 @@ public class StrategyMainB extends Brain {
 	private void bypassWreck_S_E() {
 
 		if (state == TURN_SOUTH_TO_BYBASS_EAST_TASK_1 && !(isSameDirection(getHeading(), Parameters.SOUTH))) {
-			stepTurn(Parameters.Direction.RIGHT);
+			stepTurn(Parameters.Direction.LEFT);
 			return;
 		}
 		if (state == TURN_SOUTH_TO_BYBASS_EAST_TASK_1 && isSameDirection(getHeading(), Parameters.SOUTH)) {
@@ -801,16 +804,16 @@ public class StrategyMainB extends Brain {
 			return;
 		}
 		if (state == TURN_SOUTH_TO_BYBASS_EAST_TASK_6 && oldY - myY > 100) {
-			stepTurn(Parameters.Direction.RIGHT);
+			stepTurn(Parameters.Direction.LEFT);
 			state = TURN_SOUTH_TO_BYBASS_EAST_TASK_7;
 			return;
 		}
-		if (state == TURN_SOUTH_TO_BYBASS_EAST_TASK_7 && !(isSameDirection(getHeading(), Parameters.EAST))) {
-			stepTurn(Parameters.Direction.RIGHT);
+		if (state == TURN_SOUTH_TO_BYBASS_EAST_TASK_7 && !(isSameDirection(getHeading(), Parameters.WEST))) {
+			stepTurn(Parameters.Direction.LEFT);
 			return;
 		}
-		if (state == TURN_SOUTH_TO_BYBASS_EAST_TASK_7 && isSameDirection(getHeading(), Parameters.EAST)) {
-			state = MOVE_AND_FIRE_TASK;
+		if (state == TURN_SOUTH_TO_BYBASS_EAST_TASK_7 && isSameDirection(getHeading(), Parameters.WEST)) {
+			state = MOVE_BACK_AND_FIRE_TASK;
 			return;
 		}
 
@@ -819,7 +822,7 @@ public class StrategyMainB extends Brain {
 	private void bypassWreck_N_W() {
 
 		if (state == TURN_NORTH_TO_BYBASS_WEST_TASK_1 && !(isSameDirection(getHeading(), Parameters.NORTH))) {
-			stepTurn(Parameters.Direction.LEFT);
+			stepTurn(Parameters.Direction.RIGHT);
 			return;
 		}
 		if (state == TURN_NORTH_TO_BYBASS_WEST_TASK_1 && isSameDirection(getHeading(), Parameters.NORTH)) {
@@ -871,23 +874,23 @@ public class StrategyMainB extends Brain {
 			return;
 		}
 		if (state == TURN_NORTH_TO_BYBASS_WEST_TASK_6 && myY - oldY > 100) {
-			stepTurn(Parameters.Direction.LEFT);
+			stepTurn(Parameters.Direction.RIGHT);
 			state = TURN_NORTH_TO_BYBASS_WEST_TASK_7;
 			return;
 		}
-		if (state == TURN_NORTH_TO_BYBASS_WEST_TASK_7 && !(isSameDirection(getHeading(), Parameters.EAST))) {
-			stepTurn(Parameters.Direction.LEFT);
+		if (state == TURN_NORTH_TO_BYBASS_WEST_TASK_7 && !(isSameDirection(getHeading(), Parameters.WEST))) {
+			stepTurn(Parameters.Direction.RIGHT);
 			return;
 		}
-		if (state == TURN_NORTH_TO_BYBASS_WEST_TASK_7 && isSameDirection(getHeading(), Parameters.EAST)) {
-			state = MOVE_BACK_AND_FIRE_TASK;
+		if (state == TURN_NORTH_TO_BYBASS_WEST_TASK_7 && isSameDirection(getHeading(), Parameters.WEST)) {
+			state = MOVE_AND_FIRE_TASK;
 			return;
 		}
 	}
 
 	private void bypassWreck_S_W() {
 		if (state == TURN_SOUTH_TO_BYBASS_WEST_TASK_1 && !(isSameDirection(getHeading(), Parameters.SOUTH))) {
-			stepTurn(Parameters.Direction.RIGHT);
+			stepTurn(Parameters.Direction.LEFT);
 			return;
 		}
 		if (state == TURN_SOUTH_TO_BYBASS_WEST_TASK_1 && isSameDirection(getHeading(), Parameters.SOUTH)) {
@@ -939,16 +942,16 @@ public class StrategyMainB extends Brain {
 			return;
 		}
 		if (state == TURN_SOUTH_TO_BYBASS_WEST_TASK_6 && oldY - myY > 100) {
-			stepTurn(Parameters.Direction.RIGHT);
+			stepTurn(Parameters.Direction.LEFT);
 			state = TURN_SOUTH_TO_BYBASS_WEST_TASK_7;
 			return;
 		}
-		if (state == TURN_SOUTH_TO_BYBASS_WEST_TASK_7 && !(isSameDirection(getHeading(), Parameters.EAST))) {
-			stepTurn(Parameters.Direction.RIGHT);
+		if (state == TURN_SOUTH_TO_BYBASS_WEST_TASK_7 && !(isSameDirection(getHeading(), Parameters.WEST))) {
+			stepTurn(Parameters.Direction.LEFT);
 			return;
 		}
-		if (state == TURN_SOUTH_TO_BYBASS_WEST_TASK_7 && isSameDirection(getHeading(), Parameters.EAST)) {
-			state = MOVE_BACK_AND_FIRE_TASK;
+		if (state == TURN_SOUTH_TO_BYBASS_WEST_TASK_7 && isSameDirection(getHeading(), Parameters.WEST)) {
+			state = MOVE_AND_FIRE_TASK;
 			return;
 		}
 	}
