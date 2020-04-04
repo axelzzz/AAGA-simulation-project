@@ -11,11 +11,10 @@ Ils se déplacent plus rapidement que les Main puis exécutent des aller retour 
 et tenter d'esquiver des attaques ennemies. Dans le pire des cas, ils peuvent servir de bouclier pour les Main. 
 Ils peuvent également détecter les balles alliées pour tenter de les éviter. 
 Arrivé au bout du terrain, les Secondary et les mains refont la même stratégie en reculant.
+Si des épaves empêchent le déplacement de nos bots, ils les contournent.
 
 Nos 5 robots communiquent entre eux pour connaitre leurs positions respectives. Ce calcul de position est effectué
 avant de tirer pour éviter les tirs alliés.
-
-Si des épaves empêchent le déplacement de nos bots, ils les contournent.
 
 Lorsqu'un Secondary trouve un ennemi, il envoie la position (de l'ennemi) aux Main puis recule pour ne pas être détécté par 
 l'ennemi.
