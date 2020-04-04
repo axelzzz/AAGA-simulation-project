@@ -13,7 +13,7 @@ import characteristics.IRadarResult;
 
 import java.util.ArrayList;
 
-public class StrategySecondaryA extends Brain {
+public class teamASecondary_v1 extends Brain {
 	// ---PARAMETERS---//
 	private static final double ANGLEPRECISION = 0.01;
 
@@ -49,7 +49,7 @@ public class StrategySecondaryA extends Brain {
 
 
 	// ---CONSTRUCTORS---//
-	public StrategySecondaryA() {
+	public teamASecondary_v1() {
 		super();
 	}
 

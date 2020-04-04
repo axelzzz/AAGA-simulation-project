@@ -13,7 +13,7 @@ import characteristics.IRadarResult;
 
 import java.util.ArrayList;
 
-public class StrategyMainB extends Brain {
+public class teamAMain extends Brain {
 	// ---PARAMETERS---//
 	private static final double ANGLEPRECISION = 0.01;
 	private static final double FIREANGLEPRECISION = Math.PI / (double) 6;
@@ -131,7 +131,7 @@ public class StrategyMainB extends Brain {
 	private int oldX, oldY;
 
 	// ---CONSTRUCTORS---//
-	public StrategyMainB() {
+	public teamAMain() {
 		super();
 	}
 
@@ -179,7 +179,7 @@ public class StrategyMainB extends Brain {
 					int wreckY = (int) (myY + o.getObjectDistance() * Math.sin(o.getObjectDirection()));
 					int dist = distance(myX, myY, wreckX, wreckY);
 					if (state == MOVE_AND_FIRE_TASK) {
-						if (wreckY >= myY - 100 && wreckY <= myY + 100 && dist < 150) {
+						if (dist < 150 && wreckY >= myY - 100 && wreckY <= myY + 100 && wreckX>=myX) {
 							if (wreckY >= myY) {
 								state = TURN_NORTH_TO_BYBASS_EAST_TASK_1;
 							} else {
@@ -187,7 +187,7 @@ public class StrategyMainB extends Brain {
 							}
 						}
 					} else if (state == MOVE_BACK_AND_FIRE_TASK) {
-						if (wreckY >= myY - 100 && wreckY <= myY + 100 && dist < 150) {
+						if (dist < 150 && wreckY >= myY - 100 && wreckY <= myY + 100 && wreckX<=myX) {
 							if (wreckY >= myY) {
 								state = TURN_NORTH_TO_BYBASS_WEST_TASK_1;
 							} else {
@@ -337,35 +337,35 @@ public class StrategyMainB extends Brain {
 
 		
 	private void displayMessage() {
-//		if (whoAmI == ALPHA) {
-//			sendLogMessage("#ALPHA : (x,y)= (" + (int) myX + ", " + (int) myY + ") theta= "
-//					+ (int) (myGetHeading() * 180 / (double) Math.PI) + "°. #State= " + state);
-//		}
-//		if (whoAmI == BETA) {
-//			sendLogMessage("#BETA : (x,y)= (" + (int) myX + ", " + (int) myY + ") theta= "
-//					+ (int) (myGetHeading() * 180 / (double) Math.PI) + "°. #State= " + state);
-//		}
-//		if (whoAmI == GAMMA) {
-//			sendLogMessage("#GAMMA : (x,y)= (" + (int) myX + ", " + (int) myY + ") theta= "
-//					+ (int) (myGetHeading() * 180 / (double) Math.PI) + "°. #State= " + state);
-//		}
-
 		if (whoAmI == ALPHA) {
-			sendLogMessage("#A : (" + (int) myX + "," + (int) myY + ") State= " + state + " fireOrder=" + fireOrder
-					+ " (" + (int) targetX + "," + (int) targetY + ")" + " " + detectFront().getObjectType());
+			sendLogMessage("#ALPHA : (x,y)= (" + (int) myX + ", " + (int) myY + ") theta= "
+					+ (int) (myGetHeading() * 180 / (double) Math.PI) + "°. #State= " + state);
 		}
 		if (whoAmI == BETA) {
-			sendLogMessage("#B : (" + (int) myX + "," + (int) myY + ") State= " + state + " fireOrder=" + fireOrder
-					+ " (" + (int) targetX + "," + (int) targetY + ")" + " " + detectFront().getObjectType());
+			sendLogMessage("#BETA : (x,y)= (" + (int) myX + ", " + (int) myY + ") theta= "
+					+ (int) (myGetHeading() * 180 / (double) Math.PI) + "°. #State= " + state);
 		}
 		if (whoAmI == GAMMA) {
-			sendLogMessage("#G : (" + (int) myX + "," + (int) myY + ") State= " + state + " fireOrder=" + fireOrder
-					+ " (" + (int) targetX + "," + (int) targetY + ")" + " " + detectFront().getObjectType());
+			sendLogMessage("#GAMMA : (x,y)= (" + (int) myX + ", " + (int) myY + ") theta= "
+					+ (int) (myGetHeading() * 180 / (double) Math.PI) + "°. #State= " + state);
 		}
 
-//		if (fireOrder) {
-//			sendLogMessage("Firing enemy at ("+ (int)targetX+","+(int)targetY+")" );
+//		if (whoAmI == ALPHA) {
+//			sendLogMessage("#A : (" + (int) myX + "," + (int) myY + ") State= " + state + " fireOrder=" + fireOrder
+//					+ " (" + (int) targetX + "," + (int) targetY + ")" + " " + detectFront().getObjectType());
 //		}
+//		if (whoAmI == BETA) {
+//			sendLogMessage("#B : (" + (int) myX + "," + (int) myY + ") State= " + state + " fireOrder=" + fireOrder
+//					+ " (" + (int) targetX + "," + (int) targetY + ")" + " " + detectFront().getObjectType());
+//		}
+//		if (whoAmI == GAMMA) {
+//			sendLogMessage("#G : (" + (int) myX + "," + (int) myY + ") State= " + state + " fireOrder=" + fireOrder
+//					+ " (" + (int) targetX + "," + (int) targetY + ")" + " " + detectFront().getObjectType());
+//		}
+
+		if (fireOrder) {
+			sendLogMessage("Firing enemy at ("+ (int)targetX+","+(int)targetY+")" );
+		}
 	}
 
 		

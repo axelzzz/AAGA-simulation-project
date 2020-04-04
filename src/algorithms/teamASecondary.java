@@ -13,7 +13,7 @@ import characteristics.IRadarResult;
 
 import java.util.ArrayList;
 
-public class StrategySecondaryB extends Brain {
+public class teamASecondary extends Brain {
 	// ---PARAMETERS---//
 	private static final double ANGLEPRECISION = 0.01;
 
@@ -105,7 +105,7 @@ public class StrategySecondaryB extends Brain {
 	private int oldX, oldY;
 
 	// ---CONSTRUCTORS---//
-	public StrategySecondaryB() {
+	public teamASecondary() {
 		super();
 	}
 
@@ -132,11 +132,9 @@ public class StrategySecondaryB extends Brain {
 
 		// DEBUG MESSAGE
 		if (whoAmI == ROCKY)
-			sendLogMessage("#R : (" + (int) myX + ", " + (int) myY + ") State= " + state + " front="
-					+ detectFront().getObjectType());
+			sendLogMessage("#ROCKY : (" + (int) myX + ", " + (int) myY + ")  State= " + state);
 		else
-			sendLogMessage("#M : (" + (int) myX + ", " + (int) myY + ") State= " + state + " front="
-					+ detectFront().getObjectType());
+			sendLogMessage("#MARIO : (" + (int) myX + ", " + (int) myY + ")  State= " + state);
 
 		// COMMUNICATION
 		broadcast(whoAmI + "/" + TEAM + "/" + COMM + "/" + state + "/" + myX + "/" + myY + "/" + OVER);
@@ -152,8 +150,15 @@ public class StrategySecondaryB extends Brain {
 					|| o.getObjectType() == IRadarResult.Types.OpponentSecondaryBot) {
 				double enemyX = myX + o.getObjectDistance() * Math.cos(o.getObjectDirection());
 				double enemyY = myY + o.getObjectDistance() * Math.sin(o.getObjectDirection());
-				state = MOVE_BACK_TASK;
 				broadcast(whoAmI + "/" + TEAM + "/" + FIRE + "/" + enemyX + "/" + enemyY + "/" + OVER);
+				
+				if (state == MOVE_TASK && enemyX>=myX) {
+					state = MOVE_BACK_TASK;
+				}
+				if (state == MOVE_BACK_TASK && enemyX<=myX) {
+					state = MOVE_TASK;
+				}
+				
 				if (Is_Fifth_Element && whoAmI == ROCKY && ((int) enemyY <= 795 || (int) enemyY >= 805)) {
 //					System.out.println("\n\n\n RRRRRRRRRR "+enemyX+","+enemyY+"\n\n\n");
 					broadcast(whoAmI + "/" + TEAM + "/" + NOT_FIFTH_ELEMENT + "/" + OVER);
@@ -167,6 +172,18 @@ public class StrategySecondaryB extends Brain {
 			if (o.getObjectDistance() <= 100) { // TODO : if <=300 move back
 				freeze = true;
 			}
+			
+			if (o.getObjectType() == IRadarResult.Types.TeamMainBot || o.getObjectType() == IRadarResult.Types.TeamSecondaryBot) {
+				double teamX = myX + o.getObjectDistance() * Math.cos(o.getObjectDirection());
+				double teamY = myY + o.getObjectDistance() * Math.sin(o.getObjectDirection());
+				int dist = distance(myX, myY, teamX, teamY);
+				if (dist <= 150 && state == MOVE_TASK && teamX>=myX) {
+					state = MOVE_BACK_TASK;
+				}
+				if (dist <= 150 && state == MOVE_BACK_TASK && teamX<=myX) {
+					state = MOVE_TASK;
+				}
+			}
 
 			if (!Is_Fifth_Element) {
 				if (o.getObjectType() == IRadarResult.Types.Wreck) {
@@ -174,7 +191,7 @@ public class StrategySecondaryB extends Brain {
 					int wreckY = (int) (myY + o.getObjectDistance() * Math.sin(o.getObjectDirection()));
 					int dist = distance(myX, myY, wreckX, wreckY);
 					if (state == MOVE_TASK) {
-						if (wreckY >= myY - 100 && wreckY <= myY + 100 && dist < 150) {
+						if (dist < 150 && wreckY >= myY - 100 && wreckY <= myY + 100 && wreckX>=myX) {
 							if (wreckY >= myY) {
 								state = TURN_NORTH_TO_BYBASS_EAST_TASK_1;
 							} else {
@@ -182,7 +199,7 @@ public class StrategySecondaryB extends Brain {
 							}
 						}
 					} else if (state == MOVE_BACK_TASK) {
-						if (wreckY >= myY - 100 && wreckY <= myY + 100 && dist < 150) {
+						if (dist < 150 && wreckY >= myY - 100 && wreckY <= myY + 100 && wreckX<=myX) {
 							if (wreckY >= myY) {
 								state = TURN_NORTH_TO_BYBASS_WEST_TASK_1;
 							} else {
@@ -206,12 +223,10 @@ public class StrategySecondaryB extends Brain {
 		bypassWreck();
 
 		if (state == TURN_EAST_TASK && !(isSameDirection(getHeading(), Parameters.EAST))) {
-			if (myGetHeading() >= 0 && myGetHeading() < Math.PI) {
-				stepTurn(Parameters.Direction.LEFT);
-			}
-			if (myGetHeading() >= Math.PI && myGetHeading() < Math.PI * 2) {
+			if (whoAmI==ROCKY)
 				stepTurn(Parameters.Direction.RIGHT);
-			}
+			if (whoAmI==MARIO)
+				stepTurn(Parameters.Direction.LEFT);
 			return;
 		}
 		if (state == TURN_EAST_TASK && isSameDirection(getHeading(), Parameters.EAST)) {
